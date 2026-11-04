@@ -22,6 +22,8 @@ downloads/
 eggs/
 .eggs/
 lib/
+!personal-ticket-agent/bot/lib/
+!personal-ticket-agent/bot/lib/**
 lib64/
 parts/
 sdist/
