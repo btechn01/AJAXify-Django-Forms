@@ -21,7 +21,14 @@ Copy `.env.example` to `.env` for a local run.
 | `CLOUD_REPO_URLS` | Comma-separated repository URLs the cloud agent may change. |
 | `CLOUD_BASE_BRANCH` | Base branch for those pull requests. Default `develop`. |
 
-Connect Bitbucket Cloud to the same Cursor account. On deploy, include each `workspace/repo` the agent may see. Connect the Atlassian connector on the deployed agent so later turns can read Jira. The queue tool itself does not call Jira.
+Connect Bitbucket Cloud to the same Cursor account. Pass each repository on deploy:
+
+```bash
+npx @grok/agent-sdk deploy --dir personal-ticket-agent \
+  --cursor-events-repo bitbucket.org/<workspace>/<repo>
+```
+
+Repeat `--cursor-events-repo` for every repository you review. Connect the Atlassian connector in the Cursor dashboard under the name `Atlassian`. The weekday queue uses it when it is connected. The queue tool itself does not call Jira.
 
 ## Jira automation
 
@@ -73,8 +80,10 @@ Run the first deploy in your own terminal so the alias token is not stored in a 
 
 ```bash
 npx @grok/agent-sdk validate --dir personal-ticket-agent
-npx @grok/agent-sdk deploy --dir personal-ticket-agent --dry-run
-npx @grok/agent-sdk deploy --dir personal-ticket-agent
+npx @grok/agent-sdk deploy --dir personal-ticket-agent --dry-run \
+  --cursor-events-repo bitbucket.org/<workspace>/<repo>
+npx @grok/agent-sdk deploy --dir personal-ticket-agent \
+  --cursor-events-repo bitbucket.org/<workspace>/<repo>
 ```
 
 Save the alias token. Manage the agent at https://cursor.com/dashboard/deployed-agents. Set the secrets there, connect Atlassian, and connect Bitbucket repositories before you enable the Jira automation.
